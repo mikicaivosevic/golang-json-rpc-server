@@ -35,16 +35,16 @@ func (t *EmailService) SendEmail(r *http.Request, args *EmailArgs, result *Respo
 
 
 func main() {
-	rpc := rpc.NewServer()
+	rpcServer := rpc.NewServer()
 
-	rpc.RegisterCodec(json.NewCodec(), "application/json")
-	rpc.RegisterCodec(json.NewCodec(), "application/json;charset=UTF-8")
+	rpcServer.RegisterCodec(json.NewCodec(), "application/json")
+	rpcServer.RegisterCodec(json.NewCodec(), "application/json;charset=UTF-8")
 
 	sms := new(SmsService)
 	email := new(EmailService)
 
-	rpc.RegisterService(sms, "sms")
-	rpc.RegisterService(email, "email")
+	rpcServer.RegisterService(sms, "sms")
+	rpcServer.RegisterService(email, "email")
 
 	router := mux.NewRouter()
 	router.Handle("/delivery", rpc)
