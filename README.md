@@ -45,17 +45,20 @@ func (t *EmailService) SendEmail(r *http.Request, args *EmailArgs, result *Respo
 ####Example how to register services and start rpc server
 ```go
 func main() {
-	s := rpc.NewServer()
+	rpc := rpc.NewServer()
 
-	s.RegisterCodec(json.NewCodec(), "application/json")
-	s.RegisterCodec(json.NewCodec(), "application/json;charset=UTF-8")
+	rpc.RegisterCodec(json.NewCodec(), "application/json")
+	rpc.RegisterCodec(json.NewCodec(), "application/json;charset=UTF-8")
+
 	sms := new(SmsService)
 	email := new(EmailService)
-	s.RegisterService(sms, "sms")
-	s.RegisterService(email, "email")
-	r := mux.NewRouter()
-	r.Handle("/delivery", s)
-	http.ListenAndServe(":1337", r)
+
+	rpc.RegisterService(sms, "sms")
+	rpc.RegisterService(email, "email")
+
+	router := mux.NewRouter()
+	router.Handle("/delivery", rpc)
+	http.ListenAndServe(":1337", router)
 }
 ```
 
