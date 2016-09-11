@@ -57,7 +57,7 @@ func main() {
 	rpcServer.RegisterService(email, "email")
 
 	router := mux.NewRouter()
-	router.Handle("/delivery", rpc)
+	router.Handle("/delivery", rpcServer)
 	http.ListenAndServe(":1337", router)
 }
 ```
